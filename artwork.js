@@ -1,12 +1,13 @@
 import {db,auth,onAuthStateChanged,collection,doc,getDoc,getDocs,query,where,orderBy,addDoc,updateDoc,increment,serverTimestamp,setDoc} from "./firebase.js";
 import {setupUI,t} from "./ui.js";
 setupUI(); document.querySelector("#year").textContent=new Date().getFullYear();
-const $=s=>document.querySelector(s); const id=new URLSearchParams(location.search).get("id"); let art,user;
+const $=s=>document.querySelector(s); const id=new URLSearchParams(location.search).get("id"); let art,user,viewCounted=false;
 const esc=s=>(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 async function load(){
  if(!id){$("#artwork").innerHTML=`<div class='empty'>${t("artwork.notFound")}</div>`;return;}
  const s=await getDoc(doc(db,"artworks",id)); if(!s.exists()||s.data().deleted){ $("#artwork").innerHTML=`<div class='empty'>${t("artwork.notFound")}</div>`;return;}
- art={id:s.id,...s.data()}; await updateDoc(doc(db,"artworks",id),{views:increment(1)});
+  art={id:s.id,...s.data()};
+ if(!viewCounted){ viewCounted=true; updateDoc(doc(db,"artworks",id),{views:increment(1)}); art.views=(art.views||0)+1; }
  $("#artwork").innerHTML=`<article class="artwork-detail"><div class="artwork-image"><img src="${art.imageUrl}" alt="${esc(art.title)}"></div><div class="artwork-info"><span class="eyebrow">${esc(art.categoryName||t("art.category"))}</span><h1>${esc(art.title)}</h1><p>${esc(art.description||"")}</p><div class="mini-tags">${(art.tags||[]).map(tag=>`<em>#${esc(tag)}</em>`).join("")}</div><div class="metrics">👁️ ${art.views||0} · <button id="likeBtn" class="metric-btn">♡ ${art.likesCount||0}</button></div><div class="steps">${(art.steps||[]).map((u,i)=>`<img src="${u}" alt="${t("artwork.step")} ${i+1}">`).join("")}</div></div></article>`;
  $("#likeBtn").onclick=like;
  await loadComments(); await navigation();
