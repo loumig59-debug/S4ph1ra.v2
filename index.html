@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio artistique de S4ph1ra.">
+  <title>S4ph1ra — Portfolio artistique</title>
+  <link rel="icon" href="assets/symbol.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loader" class="loader"><div class="loader-logo">S4ph1ra</div><div>✦</div><small>Chargement de l'univers…</small></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html"><span id="brandSymbol">✦</span><span>S4ph1ra</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">☰</button>
+    <nav id="mainNav">
+      <a href="index.html" data-i18n="nav.home">Accueil</a>
+      <a href="gallery.html" data-i18n="nav.gallery">Galerie</a>
+      <a href="index.html#about" data-i18n="nav.about">À propos</a>
+      <a href="index.html#news" data-i18n="nav.news">Actualités</a>
+      <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+      <a href="profile.html" id="profileLink" class="nav-profile" data-i18n="nav.profile">Profil</a>
+      <a href="admin.html" id="adminLink" class="nav-admin" style="display:none;" data-i18n="nav.admin">
+  👑 Administration</a>
+      <button id="themeButton" class="icon-btn" title="Thème">◐</button>
+      <button id="langButton" class="icon-btn" title="Langue">FR</button>
+    </nav>
+  </header>
+
+  <div id="globalAnnouncement" class="announcement hidden"></div>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">DIGITAL ART • FANTASY • CREATIVE UNIVERSE</p>
+        <h1 id="heroTitle" data-auto>Bienvenue dans mon univers.</h1>
+        <p id="heroText" data-auto>Un espace pour découvrir mes dessins, mes croquis et mon évolution artistique.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="gallery.html" data-i18n="hero.gallery">Découvrir mes dessins</a>
+          <a class="btn ghost" href="#about" data-i18n="hero.about">En savoir plus</a>
+        </div>
+      </div>
+      <div class="hero-art reveal">
+        <img id="heroImage" src="assets/hero-placeholder.svg" alt="Illustration principale">
+      </div>
+    </section>
+
+    <section class="section" id="featured">
+      <div class="section-heading reveal">
+        <div><span class="eyebrow">SELECTED WORKS</span><h2 data-i18n="featured.title">Créations mises en avant</h2></div>
+        <a href="gallery.html" class="text-link" data-i18n="common.seeAll">Tout voir →</a>
+      </div>
+      <div id="featuredGrid" class="art-grid"></div>
+    </section>
+
+    <section class="section alt" id="latest">
+      <div class="section-heading reveal">
+        <div><span class="eyebrow">LATEST</span><h2 data-i18n="latest.title">Dernières créations</h2></div>
+      </div>
+      <div id="latestGrid" class="art-grid"></div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="about-card reveal">
+        <span class="eyebrow">ABOUT S4PH1RA</span>
+        <h2 data-i18n="about.title">Une artiste, un univers, beaucoup de choses à créer.</h2>
+        <p id="aboutText" data-auto>Je dessine pour explorer des idées, des créatures et des univers qui me plaisent. Ce site rassemble mes créations et mon évolution.</p>
+        <a class="btn ghost" href="profile.html" data-i18n="about.profileLink">Voir mon profil →</a>
+      </div>
+      <div class="about-stats reveal">
+        <div><strong id="statArtworks">—</strong><span>Créations</span></div>
+        <div><strong id="statCategories">—</strong><span>Catégories</span></div>
+        <div><strong id="statViews">—</strong><span>Vues</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="news">
+      <div class="section-heading reveal"><div><span class="eyebrow">UPDATES</span><h2 data-i18n="news.title">Actualités</h2></div></div>
+      <div id="newsList" class="news-list"></div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="contact-card reveal">
+        <span class="eyebrow">CONTACT</span>
+        <h2 data-i18n="contact.title">Une question ?</h2>
+        <p data-i18n="contact.text">Tu peux me retrouver sur mes réseaux ou m'écrire directement.</p>
+        <a id="emailLink" class="btn primary" href="mailto:contact@example.com">contact@example.com</a>
+        <div id="socialLinks" class="social-links"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>© <span id="year"></span> S4ph1ra</span><span data-i18n="footer.credit">Créé avec passion ✦</span></footer>
+  
+  <script type="module" src="app.js"></script>
+  <script type="module" src="navigation.js"></script>
+</body>
+</html>

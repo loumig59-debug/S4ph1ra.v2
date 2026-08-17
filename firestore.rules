@@ -1,0 +1,170 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Vérifie que l'utilisateur est connecté
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Vérifie le rôle enregistré dans /users/{uid}
+    function userRole() {
+      return get(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data.role;
+    }
+
+    function isOwner() {
+      return signedIn() && userRole() == "owner";
+    }
+
+    function isAdmin() {
+      return signedIn() &&
+        (userRole() == "owner" || userRole() == "admin");
+    }
+
+    function isModerator() {
+      return signedIn() &&
+        (userRole() == "owner" ||
+         userRole() == "admin" ||
+         userRole() == "moderator");
+    }
+
+    // =========================
+    // PROFILS
+    // =========================
+
+    match /users/{uid} {
+      allow read: if signedIn();
+
+      allow create: if signedIn() && request.auth.uid == uid;
+
+      allow update: if signedIn() &&
+        (request.auth.uid == uid || isAdmin());
+
+      allow delete: if isOwner();
+    }
+
+    // =========================
+    // DESSINS
+    // =========================
+
+    match /artworks/{artworkId} {
+      allow read: if true;
+
+      allow create: if signedIn();
+
+      allow update: if signedIn() &&
+        (resource.data.authorId == request.auth.uid ||
+         isModerator());
+
+      allow delete: if signedIn() &&
+        (resource.data.authorId == request.auth.uid ||
+         isModerator());
+
+      // Likes déposés directement sous chaque dessin (artworks/{id}/likes/{uid})
+      match /likes/{uid} {
+        allow read: if true;
+        allow create, delete: if signedIn() && request.auth.uid == uid;
+      }
+
+      // Commentaires déposés directement sous chaque dessin (artworks/{id}/comments/{commentId})
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+        allow update, delete: if signedIn() &&
+          (resource.data.uid == request.auth.uid || isModerator());
+      }
+    }
+
+    // =========================
+    // COMMENTAIRES
+    // =========================
+
+    match /comments/{commentId} {
+      allow read: if true;
+
+      allow create: if signedIn();
+
+      allow update, delete: if signedIn() &&
+        (resource.data.authorId == request.auth.uid ||
+         isModerator());
+    }
+
+    // =========================
+    // FAVORIS
+    // =========================
+
+    match /favorites/{favoriteId} {
+      allow read: if signedIn();
+
+      allow create, update, delete: if signedIn() &&
+        request.resource.data.userId == request.auth.uid;
+    }
+
+    // =========================
+    // CATÉGORIES
+    // =========================
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // =========================
+    // TAGS
+    // =========================
+
+    match /tags/{tagId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // =========================
+    // ANNONCES
+    // =========================
+
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // =========================
+    // ACTUALITÉS
+    // =========================
+
+    match /news/{newsId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // =========================
+    // OBJECTIFS
+    // =========================
+
+    match /goals/{goalId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // =========================
+    // ACTIVITÉ RÉCENTE (tableau de bord admin)
+    // =========================
+
+    match /activity/{activityId} {
+      allow read: if isModerator();
+      allow create: if isModerator();
+      allow update, delete: if isOwner();
+    }
+
+    // =========================
+    // PARAMÈTRES DU SITE
+    // =========================
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Création — S4ph1ra</title><link rel="icon" href="assets/symbol.svg"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="index.html"><span id="brandSymbol">✦</span><span>S4ph1ra</span></a><button class="menu-toggle" id="menuToggle">☰</button><nav id="mainNav"><a href="index.html" data-i18n="nav.home">Accueil</a><a href="gallery.html" data-i18n="nav.gallery">Galerie</a><a href="index.html#about" data-i18n="nav.about">À propos</a><a href="index.html#contact" data-i18n="nav.contact">Contact</a><a href="profile.html" id="profileLink" data-i18n="nav.profile">Profil</a><button id="themeButton" class="icon-btn">◐</button><button id="langButton" class="icon-btn">FR</button></nav></header>
+<main class="section artwork-page">
+<div id="artwork"></div>
+<div class="pager"><button id="prevArt" class="btn ghost" data-i18n="artwork.prev">← Précédent</button><button id="nextArt" class="btn ghost" data-i18n="artwork.next">Suivant →</button></div>
+<section class="comments"><div class="section-heading"><div><span class="eyebrow">COMMUNITY</span><h2 data-i18n="artwork.commentsTitle">Commentaires</h2></div></div><div id="loginNotice" class="notice hidden"></div><div id="commentForm" class="comment-form hidden"><textarea id="commentInput" class="input" rows="4" data-i18n-placeholder="artwork.commentPlaceholder" placeholder="Écrire un commentaire…"></textarea><button id="sendComment" class="btn primary" data-i18n="artwork.publish">Publier</button></div><div id="commentsList"></div></section>
+</main>
+<footer>© <span id="year"></span> S4ph1ra</footer>
+<script type="module" src="artwork.js"></script>
+</body></html>
